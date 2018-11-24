@@ -10,7 +10,8 @@ import java.util.stream.Stream;
 public class Main {
 
     public static void main(String[] args) {
-        new Main();
+        Gui g = new Gui();
+        g.setVisible(true);
     }
 
     public Main() {
