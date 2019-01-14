@@ -1,10 +1,10 @@
 import java.io.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+import java.util.zip.*;
 
 public class Zipping {
 
     public Zipping(String zipFilePath, String destDir) {
+    	System.out.println("Start");
 
         File dir = new File(destDir);
         FileInputStream fis;
@@ -13,20 +13,22 @@ public class Zipping {
         try {
             fis = new FileInputStream(zipFilePath);
             ZipInputStream zis = new ZipInputStream(fis);
-            ZipEntry ze = zis.getNextEntry();
-            while (ze != null) {
+            ZipEntry ze = null;
+            while ((ze = zis.getNextEntry()) != null) {
                 String fileName = ze.getName();
-                File newFile = new File(destDir + File.separator + fileName);
+                File newFile = new File(destDir + System.getProperty("file.separator") + fileName);
                 System.out.println("Unzipping to " + newFile.getAbsolutePath());
-                new File(newFile.getParent()).mkdirs();
+                //new File(newFile.getParent()).mkdirs();
+                dir.mkdirs();
                 FileOutputStream fos = new FileOutputStream(newFile);
                 int len;
-                while ((len = zis.read(buffer)) > 0) {
-                    fos.write(buffer, 0, len);
+                buffer = new byte[1024];
+                while ((len = zis.read(buffer)) != -1) {
+                    //fos.write(buffer, 0, len);
+                    fos.write(buffer);
                 }
                 fos.close();
-                zis.closeEntry();
-                ze = zis.getNextEntry();
+                //ze = zis.getNextEntry();
             }
             zis.closeEntry();
             zis.close();
